@@ -1,0 +1,7 @@
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/vcstatus.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/edit_cache.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/rebuild_cache.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/list_install_components.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/install.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/install/local.dir
+/home/jose/Codigo/.conf/vcstatus/build/CMakeFiles/install/strip.dir
