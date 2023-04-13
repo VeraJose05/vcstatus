@@ -15,7 +15,7 @@ sudo make install
 ## Running
 ```
 vcstatus &
-
+```
 ## Configuration
 
 To edit the features in the status bar edit the file vcstatus.cpp
