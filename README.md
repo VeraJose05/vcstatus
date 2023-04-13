@@ -3,24 +3,24 @@
 A simple, customizable status bar for Dynamic Window Manager(dwm)
 
 
-##Requeriments
+## Requeriments
 
 
-##Installation
-
+## Installation
+```
 cd vcstatus/build
 
 sudo make install
-
-##Running
-
+```
+## Running
+```
 vcstatus &
 
-##Configuration
+## Configuration
 
 To edit the features in the status bar edit the file vcstatus.cpp
 
-##Features
+## Features
 
 Displays date
 Dispalys battery_percentage, battery_status and battery_remaining_time
