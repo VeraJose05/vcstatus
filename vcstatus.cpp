@@ -9,7 +9,13 @@
 
 using namespace std;
 
+const string color_fg = "^c#ffffff^";
 
+const string color_g1 = "^b#d600f7^";
+
+const string color_g2 = "^b#007bff^";
+
+const string color_g3 = "^b#ff7f00^";
 
 int main(){
     
@@ -23,15 +29,16 @@ int main(){
         
         string info = "";
 
-        info += Volume() + ' ';
+        info += Volume(color_fg, color_g1) + ' ';
 
         info += '[';
 
-        info += Battery_Status();
-        info += ' ' + Battery_Time() + ' ';
-        info += Battery_Percentage() + " ]";
+        info += Battery_Status(color_fg, color_g2);
+        info += ' ' + Battery_Time(color_fg, color_g2) + ' ';
+        info += Battery_Percentage(color_fg, color_g2) + " ]";
 
-        info += Date();
+        
+        info += Date(color_fg, color_g3);
 
 
         XStoreName(d , rootWindow, info.c_str());
