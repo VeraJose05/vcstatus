@@ -1,5 +1,8 @@
 
 #include<string>
+#include<iostream>
+
+using namespace std;
 
 using namespace std;
 
@@ -26,8 +29,10 @@ string GetCommand(string command){
     return command_value;
 }
 
-string Battery_Percentage(){
-    string battery_percentage = "";
+string Battery_Percentage(string foreground, string background){
+    string battery_percentage = foreground;
+
+    battery_percentage += ' ' + background;
 
     int battery_percentage_int = stoi(GetCommand("acpi -b | awk '{print int($4)}' | sed 's/%//'"));
 
@@ -51,25 +56,29 @@ string Battery_Percentage(){
     return battery_percentage;
 }
 
-string Battery_Status(){
+string Battery_Status(string foreground, string background){
 
-    string symbol;
+    string symbol = foreground;
+
+    symbol += ' ' + background;
 
     if(GetCommand("acpi -b | awk '{print $3}' | tr -d ','") == "Charging")
-        symbol = "";
+        symbol += "";
 
     else if (GetCommand("acpi -b | awk '{print $3}' | tr -d ','") == "Discharging")
-        symbol = "";
+        symbol += "";
     else
-        symbol = "F";
+        symbol += "F";
 
     return symbol;
 }
 
-string Battery_Time(){
+string Battery_Time(string foreground, string background){
     string chain = GetCommand("acpi -b | awk '{print $5}' | sed 's/,//'");
 
-    string time = "";
+    string time = foreground;
+
+    time += ' ' + background;
 
     int cont = 0, pos;
 
@@ -92,12 +101,20 @@ string Battery_Time(){
     return time;
 }
 
-string Date(){
-    return GetCommand("date +'  %d/%m/%Y   %H:%M'");
+string Date(string foreground, string background){
+    string date = foreground;
+
+    date += ' ' + background;
+
+    date += GetCommand("date +'  %d/%m/%Y   %H:%M'");
+
+    return date;
 }
 
-string Volume(){
-    string vol = "";
+string Volume(string foreground, string background){
+    string vol = foreground;
+
+    vol += ' ' + background;
 
     string volume_status = GetCommand("amixer -c 0 get Master | awk '/Mono:/ {print $6}'");
 

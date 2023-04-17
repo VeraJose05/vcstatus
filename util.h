@@ -3,15 +3,12 @@
 
 using namespace std;
 
+string Battery_Percentage(string foreground, string background);
 
-string GetCommand(string command);
+string Battery_Status(string foreground, string background);
 
-string Battery_Percentage();
+string Battery_Time(string foreground, string background);
 
-string Battery_Status();
+string Date(string foreground, string background);
 
-string Battery_Time();
-
-string Date();
-
-string Volume();
+string Volume(string foreground, string background);
