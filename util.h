@@ -1,14 +1,49 @@
 
 #include<string>
+#include <cstddef>
+#include<X11/Xlib.h>
+#include <unistd.h>
+
 
 using namespace std;
 
-string Battery_Percentage(string foreground, string background);
 
-string Battery_Status(string foreground, string background);
+class Bar{
+private:
+    string info;
 
-string Battery_Time(string foreground, string background);
+    Display *d;
 
-string Date(string foreground, string background);
+    Window rootWindow;
 
-string Volume(string foreground, string background);
+    
+
+    
+
+    string GetCommand(string command);
+
+public: 
+    Bar(string color = "");
+
+    ~Bar();
+
+    void CPU(string foreground, string background);
+
+    void Memory(string foreground, string background);
+
+    void Battery_Percentage(string foreground, string background);
+
+    void Battery_Status(string foreground, string background);
+
+    void Battery_Time(string foreground, string background);
+
+    void Date(string foreground, string background);
+
+    void Volume(string foreground, string background);
+
+    void Sep(int num, string foreground, string background);
+
+    void Wlan(string foreground, string background);
+
+    void Run();
+};

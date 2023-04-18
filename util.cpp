@@ -2,11 +2,21 @@
 #include<string>
 #include<iostream>
 
-using namespace std;
+#include"util.h"
 
 using namespace std;
 
-string GetCommand(string command){
+using namespace std;
+
+void Bar::Sep(int num, string foreground, string background){
+    info += foreground + background;
+
+    for(int i=1; i <= num; i++)
+        info += ' ';
+}
+
+
+string Bar::GetCommand(string command){
     string command_value =  "";
 
     // Create a buffer to store the output of the commands
@@ -29,10 +39,40 @@ string GetCommand(string command){
     return command_value;
 }
 
-string Battery_Percentage(string foreground, string background){
-    string battery_percentage = foreground;
 
-    battery_percentage += ' ' + background;
+
+void Bar::CPU(string foreground, string background){
+    string cpu_val = foreground + background;
+    
+    cpu_val += " CPU: ";
+
+    cpu_val += GetCommand("grep -o '^[^ ]*' /proc/loadavg");
+
+    info += cpu_val;
+}
+
+void Bar::Memory(string foreground, string background) {
+    string memory = foreground + background;
+
+    memory += "   ";
+    memory += GetCommand("free -h | awk '/^Mem/ { print $3 }' | sed s/i//g");
+
+    info += memory;
+}
+
+Bar::Bar(string color)
+{
+    info = color;
+    d = XOpenDisplay(NULL);
+    rootWindow = XRootWindow(d, 0);
+}
+
+Bar::~Bar(){
+    XCloseDisplay(d);
+}
+
+void Bar::Battery_Percentage(string foreground, string background){
+    string battery_percentage = foreground + background;
 
     int battery_percentage_int = stoi(GetCommand("acpi -b | awk '{print int($4)}' | sed 's/%//'"));
 
@@ -53,32 +93,28 @@ string Battery_Percentage(string foreground, string background){
     
     battery_percentage += '%';
 
-    return battery_percentage;
+    info += battery_percentage;
 }
 
-string Battery_Status(string foreground, string background){
+void Bar::Battery_Status(string foreground, string background){
 
-    string symbol = foreground;
-
-    symbol += ' ' + background;
+    string symbol = foreground + background;
 
     if(GetCommand("acpi -b | awk '{print $3}' | tr -d ','") == "Charging")
-        symbol += "";
+        symbol += "  ";
 
     else if (GetCommand("acpi -b | awk '{print $3}' | tr -d ','") == "Discharging")
-        symbol += "";
+        symbol += "  ";
     else
-        symbol += "F";
+        symbol += "F  ";
 
-    return symbol;
+    info += symbol;
 }
 
-string Battery_Time(string foreground, string background){
+void Bar::Battery_Time(string foreground, string background){
     string chain = GetCommand("acpi -b | awk '{print $5}' | sed 's/,//'");
 
-    string time = foreground;
-
-    time += ' ' + background;
+    string time = foreground + background;
 
     int cont = 0, pos;
 
@@ -98,38 +134,34 @@ string Battery_Time(string foreground, string background){
         cont++;
     }
 
-    return time;
+    info += time;
 }
 
-string Date(string foreground, string background){
-    string date = foreground;
-
-    date += ' ' + background;
+void Bar::Date(string foreground, string background){
+    string date = foreground + background;
 
     date += GetCommand("date +'  %d/%m/%Y   %H:%M'");
 
-    return date;
+    info += date;
 }
 
-string Volume(string foreground, string background){
-    string vol = foreground;
-
-    vol += ' ' + background;
+void Bar::Volume(string foreground, string background){
+    string vol = foreground + background;
 
     string volume_status = GetCommand("amixer -c 0 get Master | awk '/Mono:/ {print $6}'");
 
     int vol_int = stoi(GetCommand("amixer sget Master | grep -o '[0-9]*%' | head -1 | cut -d'%' -f1"));
 
     if( volume_status == "[off]" ){
-        vol += "󰝟  M";
+        vol += " 󰝟 M";
     }
     else{
         if( vol_int < 20)
-            vol += "󰕿  ";
+            vol += " 󰕿 ";
         else if( vol_int < 50)
-            vol += "󰖀  ";
+            vol += " 󰖀 ";
         else
-            vol += "󰕾  ";
+            vol += " 󰕾 ";
 
         vol += GetCommand("amixer sget Master | grep -o '[0-9]*%' | head -1 | cut -d'%' -f1");
         vol += '%';      
@@ -137,5 +169,24 @@ string Volume(string foreground, string background){
 
 
 
-    return vol;
+    info += vol;
+}
+
+void Bar::Wlan(string foreground, string background){
+    info += foreground + background;
+    string wlan = GetCommand("cat /sys/class/net/wl*/operstate 2>/dev/null");
+
+    if (wlan ==  "up"){        
+        info += "   ";
+        info += "Connected";
+    }
+    else{
+        info += " 󰖪  ";
+        info +=  "Disconnected";
+    }
+        
+}
+
+void Bar::Run(){
+    XStoreName(d , rootWindow, info.c_str());
 }
