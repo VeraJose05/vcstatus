@@ -1,51 +1,52 @@
 #include<string>
-#include <cstddef>
-#include<X11/Xlib.h>
-#include <unistd.h>
-
-#include<iostream>
 
 #include"util.h"
 
-using namespace std;
+const string background = "^b#a151d3^";
 
-const string color_fg = "^c#ffffff^";
+const string color_fg = "^c#5c5b6a^";
 
-const string color_g1 = "^b#d600f7^";
+const string color_g1 = "^b#dd6a6a^";
 
-const string color_g2 = "^b#007bff^";
+const string color_g2 = "^b#6a9edd^";
 
-const string color_g3 = "^b#ff7f00^";
+const string color_g3 = "^b#ddbd6a^";
+
+const int space = 3;
 
 int main(){
     
-    
-
-
 
     while(true){
-        Display *d = XOpenDisplay(NULL);
-        Window rootWindow = XRootWindow(d, 0);
-        
-        string info = "";
+        Bar widgets(background);
 
-        info += Volume(color_fg, color_g1) + ' ';
+        widgets.Wlan(color_fg, color_g1);
 
-        info += '[';
+        widgets.CPU(color_fg, color_g1);
 
-        info += Battery_Status(color_fg, color_g2);
-        info += ' ' + Battery_Time(color_fg, color_g2) + ' ';
-        info += Battery_Percentage(color_fg, color_g2) + " ]";
+        widgets.Memory(color_fg, color_g1);
 
-        
-        info += Date(color_fg, color_g3);
+        widgets.Sep(2, color_fg, color_g1);
 
+        widgets.Volume(color_fg, color_g2);
 
-        XStoreName(d , rootWindow, info.c_str());
+        widgets.Sep(1, color_fg, color_g2);
 
-        XCloseDisplay(d);
+        widgets.Battery_Status(color_fg, color_g2);
+
+        widgets.Battery_Time(color_fg, color_g2);
+
+        widgets.Battery_Percentage(color_fg, color_g2);
+
+        widgets.Sep(2, color_fg, color_g2);
+
+        widgets.Date(color_fg, color_g3);
+
+        widgets.Sep(1, color_fg, color_g3);
+
+        widgets.Run();
+
         sleep(1);
-
 
     }
     //
